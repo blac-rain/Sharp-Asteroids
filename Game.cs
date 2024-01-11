@@ -14,7 +14,7 @@ namespace SharpAsteroids
         int death = 10;
         bool win;
         bool lose;
-        bool goLeft;
+        int axis;
 
 
         public Game()
@@ -45,24 +45,48 @@ namespace SharpAsteroids
         public void Update()
         {            
             enemyTimer += Raylib.GetFrameTime();
-            if (enemyTimer >= 3f)
+            if (enemyTimer >= 2f)
             {
                 enemyTimer = 0f;
-                int 
-                int randX = Raylib.GetRandomValue(0, 1);
+                Random random1 = new Random();
+                Random random2 = new Random();
+                bool randPos = random1.Next(2) == 0; //random where enemy spawns
+                bool randAxis = random2.Next(2) == 0; //random on which axis the enemy moves
+                int randX = Raylib.GetRandomValue(0, 800);
+                int randY = Raylib.GetRandomValue(0, 480);
                 int posX;
-                if (randX == 0)
+                int posY;
+                if (randAxis)
                 {
-                    posX = 0;
-                    goLeft = false;
-                }
+                    if (randPos)
+                    {
+                        posX = 0;
+                        axis = 1;
+                        posY = randY;
+                    }
+                    else
+                    {
+                        posX = 800;
+                        axis = 0;
+                        posY = randY;
+                    }
+                } 
                 else
                 {
-                    posX = 800;
-                    goLeft = true;
+                    if (randPos)
+                    {
+                        posY = 0;
+                        axis = 3;
+                        posX = randX;
+                    }
+                    else
+                    {
+                        posY = 480;
+                        axis = 2;
+                        posX = randX;
+                    }
                 }
-                int randY = Raylib.GetRandomValue(0, 480);
-                Enemy enemy = new Enemy(goLeft, posX, randY);
+                Enemy enemy = new Enemy(axis, posX, posY);
                 enemies.Add(enemy);
             }
             //collision check bullets and enemies

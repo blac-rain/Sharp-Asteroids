@@ -14,24 +14,22 @@ namespace SharpAsteroids
         int posX;
         int posY;
         int speed = 3;
-        bool goLeft;
+        int axis;
 
-        public Enemy(bool ml, int x = 0, int y = 0)
+        public Enemy(int a, int x = 0, int y = 0 )
         {
             posX = x;
             posY = y;
-            goLeft = ml;
+            axis = a;
         }
 
         public void Update()
         {
-            if (goLeft)
-            {
-                posX -= speed;
-            }
-            else
-            {
-                posX += speed;
+            switch (axis) {
+                case 0: posX -= speed; break; //move left
+                case 1: posY -= speed; break; //move down
+                case 2: posX += speed; break; //move right
+                case 3: posY += speed; break; //move up
             }
         }
         public void Draw()

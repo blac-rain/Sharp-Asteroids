@@ -3,13 +3,13 @@ a small asteroids like game
 
 # Todo List
 ## Coming
-- Enemies also from up and down
+- change or improve the representation of player (perhaps a new form?)
+- change font
+- why enemies spawn slow or not always at defined tick?
 
 ## QoL
-- different shape for Enemy, more like asteroids (use image?)
-- change or improve the representation of the player (perhaps a new form?)
-- Display of points and death counters and game time not only as DrawText, e.g. as a separate bar at the bottom or top
-- change font
+- different shape for enemy, more like asteroids (use image?)
+- Display of points and death counters and game time not only as `DrawText`, e.g. as a separate bar at the bottom or top
 - add game sounds
 	- fire bullet
 	- player movement
@@ -19,9 +19,8 @@ a small asteroids like game
 - Resizable window
 - window and other information as variables not literals
 - Start Button (new overlay or menu class for such functions?)
-- Pause function
-- enemy does not spawn in the player or directly to the player
-- win or lose stops player movement (not a bug but a feature to move after game ends?)
+- Pause function (needs `elapsedTime` rework)
+- ~~win or lose stops player movement~~ (now a feature not a bug that movement after game over is possible)
 
 # Changes
 changes before pushed to github
