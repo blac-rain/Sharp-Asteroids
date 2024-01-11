@@ -3,13 +3,12 @@ a small asteroids like game
 
 # Todo List
 ## Coming
-- Display game time
-- Display of points and death counters and game time not only as DrawText, e.g. as a separate bar at the bottom or top
 - Enemies also from up and down
-- 
+
 ## QoL
 - different shape for Enemy, more like asteroids (use image?)
 - change or improve the representation of the player (perhaps a new form?)
+- Display of points and death counters and game time not only as DrawText, e.g. as a separate bar at the bottom or top
 - change font
 - add game sounds
 	- fire bullet

@@ -8,6 +8,7 @@ namespace SharpAsteroids
         List<Bullet> bullets = new List<Bullet>(32);
         List<Enemy> enemies = new List<Enemy>(16);
         Player player;
+        double startTime;
         float enemyTimer;
         int score = 0;
         int death = 10;
@@ -15,11 +16,13 @@ namespace SharpAsteroids
         bool lose;
         bool goLeft;
 
+
         public Game()
         {
             player = new Player(bullets);
             Bullet.LeftScreen += OnLeftScreen;
             player.BulletSpawn += OnBulletSpawn;
+            startTime = Raylib.GetTime();
         }
 
         public void Unsubscribe()
@@ -40,11 +43,12 @@ namespace SharpAsteroids
         }
 
         public void Update()
-        {
+        {            
             enemyTimer += Raylib.GetFrameTime();
             if (enemyTimer >= 3f)
             {
                 enemyTimer = 0f;
+                int 
                 int randX = Raylib.GetRandomValue(0, 1);
                 int posX;
                 if (randX == 0)
@@ -125,9 +129,13 @@ namespace SharpAsteroids
             {
                 enemies[i].Draw();
             }
+            double elapsedTime = Raylib.GetTime() - startTime;
+            int seconds = (int)elapsedTime % 60;
+            int minutes = (int)elapsedTime / 60;
+
             Raylib.DrawText("POINTS: " + score.ToString("00"), 5, 5, 15, Color.WHITE);
             Raylib.DrawText("DEATH:  " + death.ToString("00"), 5, 25, 15, Color.WHITE);
-            //Raylib.DrawText("Game Time: " + GetTime()-startTime, 5, 55, 20, Color.WHITE);
+            Raylib.DrawText($"{minutes:00}:{seconds:00}", 5, 465, 15, Color.WHITE);
 
             if (win)
             {
@@ -137,8 +145,7 @@ namespace SharpAsteroids
             if (lose)
             {
                 Raylib.DrawText("You Lose!", 300, 240, 25, Color.WHITE);
-            }
-
+            }            
         }
     }
 }
