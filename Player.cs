@@ -1,10 +1,5 @@
 ﻿using Raylib_cs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharpAsteroids
 {
@@ -12,8 +7,6 @@ namespace SharpAsteroids
     {
         List<Bullet> bullets = new List<Bullet>();
         public Rectangle Rec => new Rectangle(posX, posY, sizeX, sizeY);
-        public int SizeX => sizeX;
-        public int SizeY => sizeY;
         float angle;
         Vector2 startDir = new Vector2(0f, -1f);
         Vector2 dir = new Vector2();

@@ -1,10 +1,5 @@
 ﻿using Raylib_cs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharpAsteroids
 {
@@ -15,14 +10,10 @@ namespace SharpAsteroids
         Player player;
         float enemyTimer;
         int score = 0;
-        int death = 0;
-        public bool win;
-        public bool loose;
-        public bool end;
-        public static bool goUp;
-        public static bool goDown;
-        public static bool goLeft;
-        public static bool goRight;
+        int death = 10;
+        bool win;
+        bool lose;
+        bool goLeft;
 
         public Game()
         {
@@ -54,25 +45,20 @@ namespace SharpAsteroids
             if (enemyTimer >= 3f)
             {
                 enemyTimer = 0f;
-                int randX = Raylib.GetRandomValue(0, 800);
-                if (randX > 650)
+                int randX = Raylib.GetRandomValue(0, 1);
+                int posX;
+                if (randX == 0)
                 {
-                    goRight = true;
+                    posX = 0;
+                    goLeft = false;
                 }
-                if (randX < 150)
+                else
                 {
+                    posX = 800;
                     goLeft = true;
                 }
                 int randY = Raylib.GetRandomValue(0, 480);
-                if (randY < 150)
-                {
-                    goDown = true;
-                }
-                if (randY > 330)
-                {
-                    goUp = true;
-                }
-                Enemy enemy = new Enemy(randX, randY);
+                Enemy enemy = new Enemy(goLeft, posX, randY);
                 enemies.Add(enemy);
             }
             //collision check bullets and enemies
@@ -96,7 +82,7 @@ namespace SharpAsteroids
                 if (Raylib.CheckCollisionRecs(player.Rec, enemies[e].Rec))
                 {
                     enemies.RemoveAt(e);
-                    death++;
+                    death--;
                     break;
                 }
             }
@@ -111,7 +97,21 @@ namespace SharpAsteroids
                 enemies[i].Update();
             }
 
+            //win and lose
+            if (score >= 10) { win = true; }
+            else if (death <= 0) { lose = true; } //else if to win even when you die at same moment
 
+            if (win || lose)
+            {
+                for (int b = bullets.Count - 1; b >= 0; b--)
+                {
+                    bullets.RemoveAt(b);
+                }
+                for (int e = enemies.Count - 1; e >= 0; e--)
+                {
+                    enemies.RemoveAt(e);
+                }
+            }
         }
 
         public void Draw()
@@ -125,9 +125,20 @@ namespace SharpAsteroids
             {
                 enemies[i].Draw();
             }
-            Raylib.DrawText("POINTS: " + score, 5, 5, 20, Color.WHITE);
-            Raylib.DrawText("DEATH:  " + death, 5, 30, 20, Color.WHITE);
+            Raylib.DrawText("POINTS: " + score.ToString("00"), 5, 5, 15, Color.WHITE);
+            Raylib.DrawText("DEATH:  " + death.ToString("00"), 5, 25, 15, Color.WHITE);
             //Raylib.DrawText("Game Time: " + GetTime()-startTime, 5, 55, 20, Color.WHITE);
+
+            if (win)
+            {
+                Raylib.DrawText("Congratulations!", 300, 240, 25, Color.WHITE);
+                Raylib.DrawText("You Win!", 300, 270, 25, Color.WHITE);
+            }
+            if (lose)
+            {
+                Raylib.DrawText("You Lose!", 300, 240, 25, Color.WHITE);
+            }
+
         }
     }
 }

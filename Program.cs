@@ -1,14 +1,13 @@
 ﻿using Raylib_cs;
-using System.Numerics;
 
 namespace SharpAsteroids;
 
-
+//assets and sounds under CC0 (https://creativecommons.org/publicdomain/zero/1.0/) by https://www.kenney.nl
 
 class Program
 {
     public static void Main()
-    {
+    {        
         Raylib.InitWindow(800, 480, "Game 01");
         Raylib.SetTargetFPS(60);
 
