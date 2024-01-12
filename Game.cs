@@ -8,6 +8,7 @@ namespace SharpAsteroids
         List<Bullet> bullets = new List<Bullet>(32);
         List<Enemy> enemies = new List<Enemy>(16);
         Player player;
+        Texture2D playerTexture;
         double startTime;
         float enemyTimer;
         int score = 0;
@@ -15,7 +16,7 @@ namespace SharpAsteroids
         bool win;
         bool lose;
         int axis;
-
+        Font font;
 
         public Game()
         {
@@ -23,7 +24,10 @@ namespace SharpAsteroids
             Bullet.LeftScreen += OnLeftScreen;
             player.BulletSpawn += OnBulletSpawn;
             startTime = Raylib.GetTime();
+            player = new(playerTexture);
         }
+
+        public Game(Font f) => this.font = f;
 
         public void Unsubscribe()
         {
@@ -52,8 +56,8 @@ namespace SharpAsteroids
                 Random random2 = new Random();
                 bool randPos = random1.Next(2) == 0; //random where enemy spawns
                 bool randAxis = random2.Next(2) == 0; //random on which axis the enemy moves
-                int randX = Raylib.GetRandomValue(0, 800);
-                int randY = Raylib.GetRandomValue(0, 480);
+                int randX = Raylib.GetRandomValue(10, 790);
+                int randY = Raylib.GetRandomValue(10, 470);
                 int posX;
                 int posY;
                 if (randAxis)
@@ -157,7 +161,8 @@ namespace SharpAsteroids
             int seconds = (int)elapsedTime % 60;
             int minutes = (int)elapsedTime / 60;
 
-            Raylib.DrawText("POINTS: " + score.ToString("00"), 5, 5, 15, Color.WHITE);
+            string msgP = "POINTS: " + score.ToString("00");
+            Raylib.DrawTextEx(font, msgP, new Vector2(5,5), 15, 5, Color.WHITE);
             Raylib.DrawText("DEATH:  " + death.ToString("00"), 5, 25, 15, Color.WHITE);
             Raylib.DrawText($"{minutes:00}:{seconds:00}", 5, 465, 15, Color.WHITE);
 

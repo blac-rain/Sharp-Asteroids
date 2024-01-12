@@ -35,7 +35,7 @@ namespace SharpAsteroids
         public void Draw()
         {
             Raylib.DrawRectangle(posX, posY, sizeX, sizeY, Color.ORANGE);
-            //when hitbox as circle:
+            //if hitbox = circle:
             //Raylib.DrawRectangle(posX - sizeX/2, posY - sizeY/2, sizeX, sizeY, Color.ORANGE);
         }
     }

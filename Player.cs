@@ -11,15 +11,20 @@ namespace SharpAsteroids
         Vector2 startDir = new Vector2(0f, -1f);
         Vector2 dir = new Vector2();
         public event Action<float, float, Vector2>? BulletSpawn;
+        Texture2D playerTexture;
 
         int sizeX = 15;
         int sizeY = 30;
         float posX = 400;
         float posY = 360;
 
-        public Player(List<Bullet> bullets)
+        public Player(List<Bullet> b)
         {
-            this.bullets = bullets;
+            this.bullets = b;
+        }
+        public Player(Texture2D t)
+        {
+            this.playerTexture = t;
         }
 
         public void Update()
@@ -62,13 +67,25 @@ namespace SharpAsteroids
         }
 
         public void Draw()
-        {
-            Rectangle rect = new Rectangle(posX, posY, sizeX, sizeY);
-            Rectangle rect2 = new Rectangle(posX, posY - 5, sizeX, sizeY / 4);
-            Vector2 origin = new Vector2(sizeX / 2, sizeY / 2);
-            Vector2 origin2 = new Vector2(sizeX, sizeY);
-            Raylib.DrawRectanglePro(rect, origin, angle, Color.DARKBLUE);
-            Raylib.DrawRectanglePro(rect2, origin, angle, Color.SKYBLUE);
+        {            
+            if (Raylib.IsTextureReady(playerTexture))
+            {
+                Raylib.DrawTexture(playerTexture, (int)posX, (int)posY, Color.WHITE);
+            }
+            else
+            {
+                Raylib.DrawCircle((int)posX, (int)posY, 10f, Color.RED);
+                Console.WriteLine("Texture loading failed at Player.cs!");
+            }
+
+            //old player
+            //Rectangle rect = new Rectangle(posX, posY, sizeX, sizeY);
+            //Rectangle rect2 = new Rectangle(posX, posY - 5, sizeX, sizeY / 4);
+            //Vector2 origin = new Vector2(sizeX / 2, sizeY / 2);
+            //Vector2 origin2 = new Vector2(sizeX, sizeY);
+            //Raylib.DrawRectanglePro(rect, origin, angle, Color.DARKBLUE);
+            //Raylib.DrawRectanglePro(rect2, origin, angle, Color.SKYBLUE);
+            
             //for debugging
             //Raylib.DrawCircle((int)posX, (int)posY, 3f, Color.RED);
         }
