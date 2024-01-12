@@ -6,24 +6,33 @@ namespace SharpAsteroids
     public class Player
     {
         List<Bullet> bullets = new List<Bullet>();
-        public Rectangle Rec => new Rectangle(posX, posY, sizeX, sizeY);
         float angle;
+        float rotateSpeed = 3f;
         Vector2 startDir = new Vector2(0f, -1f);
         Vector2 dir = new Vector2();
         public event Action<float, float, Vector2>? BulletSpawn;
         Texture2D playerTexture;
 
-        int sizeX = 15;
-        int sizeY = 30;
-        float posX = 400;
-        float posY = 360;
+        int sizeX = 11;
+        int sizeY = 37;
+        float posX = Raylib.GetRenderWidth() / 2;
+        float posY = (Raylib.GetRenderHeight() / 3) * 2;
 
-        public Player(List<Bullet> b)
+        public Rectangle Rec
+        {
+            get
+            {
+                // centered hitbox, wings are not part of hitbox
+                int centerX = (int)(posX + (playerTexture.Width - sizeX) * 0.5f);
+                int centerY = (int)(posY + (playerTexture.Height - sizeY) * 0.5f);
+                return new Rectangle(centerX, centerY, sizeX, sizeY);
+            }
+        }
+
+        public Player(List<Bullet> b, Texture2D t)
         {
             this.bullets = b;
-        }
-        public Player(Texture2D t)
-        {
+            BulletSpawn += (x, y, dir) => { };
             this.playerTexture = t;
         }
 
@@ -32,13 +41,15 @@ namespace SharpAsteroids
             //shoot
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE))
             {
-                BulletSpawn?.Invoke(posX, posY, dir);
+                //centered bullet spawn
+                float centerX = posX + (playerTexture.Width - sizeX) * 0.5f;
+                float centerY = posY + (playerTexture.Height - sizeY) * 0.5f;
+                BulletSpawn?.Invoke(centerX, centerY, dir);
             }
 
             //movement
             if (Raylib.IsKeyDown(KeyboardKey.KEY_W) || Raylib.IsKeyDown(KeyboardKey.KEY_UP))
             {
-                //posY -= moveSpeed;
                 posX += dir.X;
                 posY += dir.Y;
             }
@@ -50,12 +61,12 @@ namespace SharpAsteroids
 
             if (Raylib.IsKeyDown(KeyboardKey.KEY_A) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
             {
-                angle -= 3f;
+                angle -= rotateSpeed;
                 dir = Raymath.Vector2Rotate(startDir, Raylib.DEG2RAD * angle);
             }
             else if (Raylib.IsKeyDown(KeyboardKey.KEY_D) || Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
             {
-                angle += 3f;
+                angle += rotateSpeed;
                 dir = Raymath.Vector2Rotate(startDir, Raylib.DEG2RAD * angle);
             }
 
@@ -67,27 +78,8 @@ namespace SharpAsteroids
         }
 
         public void Draw()
-        {            
-            if (Raylib.IsTextureReady(playerTexture))
-            {
-                Raylib.DrawTexture(playerTexture, (int)posX, (int)posY, Color.WHITE);
-            }
-            else
-            {
-                Raylib.DrawCircle((int)posX, (int)posY, 10f, Color.RED);
-                Console.WriteLine("Texture loading failed at Player.cs!");
-            }
-
-            //old player
-            //Rectangle rect = new Rectangle(posX, posY, sizeX, sizeY);
-            //Rectangle rect2 = new Rectangle(posX, posY - 5, sizeX, sizeY / 4);
-            //Vector2 origin = new Vector2(sizeX / 2, sizeY / 2);
-            //Vector2 origin2 = new Vector2(sizeX, sizeY);
-            //Raylib.DrawRectanglePro(rect, origin, angle, Color.DARKBLUE);
-            //Raylib.DrawRectanglePro(rect2, origin, angle, Color.SKYBLUE);
-            
-            //for debugging
-            //Raylib.DrawCircle((int)posX, (int)posY, 3f, Color.RED);
+        {
+            Raylib.DrawTextureEx(playerTexture, new(posX, posY), angle, 1, Color.WHITE);
         }
     }
 }

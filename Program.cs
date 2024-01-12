@@ -11,15 +11,17 @@ class Program
     {        
         Raylib.InitWindow(800, 480, "Game 01");        
         Raylib.SetTargetFPS(60);
+        Raylib.InitAudioDevice();
 
-        Texture2D playerTexture = Raylib.LoadTexture("resources/ufoRed-16px.png");
+        Texture2D playerTexture = Raylib.LoadTexture("resources/ship_red-small.png");
         Font fontFC = Raylib.LoadFont("resources/FiraCode-Regular.otf");
         Font fontFCB = Raylib.LoadFont("resources/FiraCode-Bold.otf");
-        Player player = new(playerTexture);
+        Player player = new(null, playerTexture);
+        Raylib.SetMasterVolume(0.5f);
 
-        Game game = new();
-        Game gameFont = new(fontFC);
+        Game game = new(fontFCB, playerTexture);
         
+        //console error messages for texture and fonts
         if (!Raylib.IsTextureReady(playerTexture))
         { 
             Console.WriteLine("Texture loading failed!"); 
@@ -46,6 +48,7 @@ class Program
         Raylib.UnloadFont(fontFC);
         Raylib.UnloadFont(fontFCB);
 
+        Raylib.CloseAudioDevice();
         Raylib.CloseWindow();
     }
 }

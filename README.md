@@ -17,20 +17,21 @@
 
 ---
 
-# Future Updates and Known Bugs
-## Next Update
-- change or improve the representation of player (perhaps a new form?)
-- change font
-- BUG: enemies not always spawning
-
-## Planned
+# Ideas for Future Updates
 - Resizable window
 - window and other information as variables not literals
 - Start Button (new overlay or menu class for such functions?)
 - Pause function (needs `elapsedTime` rework)
 - different shape for enemy, more like asteroids (use image?)
+- Reset player position when hit
 - Display of points and death counters and game time not only as `DrawText`, e.g. as a separate bar at the bottom or top
-- add game sounds
-	- fire bullet
+- add more game sounds
 	- player movement
 	- enemy spawn
+	- at win and lose
+
+--- 
+
+assets and sounds by [kenney](https://www.kenney.nl) under CC0 license
+
+font [Fira Code](https://github.com/tonsky/FiraCode) under OFL-1.1 license

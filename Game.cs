@@ -8,7 +8,6 @@ namespace SharpAsteroids
         List<Bullet> bullets = new List<Bullet>(32);
         List<Enemy> enemies = new List<Enemy>(16);
         Player player;
-        Texture2D playerTexture;
         double startTime;
         float enemyTimer;
         int score = 0;
@@ -17,22 +16,23 @@ namespace SharpAsteroids
         bool lose;
         int axis;
         Font font;
+        int fontSize1 = 25;
+        Sound laserSound = Raylib.LoadSound("resources/sfx_laser2.mp3");
 
-        public Game()
+        public Game(Font f, Texture2D playerTexture)
         {
-            player = new Player(bullets);
+            player = new Player(bullets, playerTexture);
             Bullet.LeftScreen += OnLeftScreen;
             player.BulletSpawn += OnBulletSpawn;
             startTime = Raylib.GetTime();
-            player = new(playerTexture);
+            this.font = f;
         }
-
-        public Game(Font f) => this.font = f;
 
         public void Unsubscribe()
         {
             Bullet.LeftScreen -= OnLeftScreen;
             player.BulletSpawn -= OnBulletSpawn;
+            Raylib.UnloadSound(laserSound);
         }
 
         public void OnLeftScreen(Bullet bullet)
@@ -44,10 +44,11 @@ namespace SharpAsteroids
         {
             Bullet b = new Bullet((int)x, (int)y, dir);
             bullets.Add(b);
+            Raylib.PlaySound(laserSound);
         }
 
         public void Update()
-        {            
+        {
             enemyTimer += Raylib.GetFrameTime();
             if (enemyTimer >= 2f)
             {
@@ -64,28 +65,28 @@ namespace SharpAsteroids
                 {
                     if (randPos)
                     {
-                        posX = 0;
+                        posX = 10;
                         axis = 1;
                         posY = randY;
                     }
                     else
                     {
-                        posX = 800;
+                        posX = 790;
                         axis = 0;
                         posY = randY;
                     }
-                } 
+                }
                 else
                 {
                     if (randPos)
                     {
-                        posY = 0;
+                        posY = 10;
                         axis = 3;
                         posX = randX;
                     }
                     else
                     {
-                        posY = 480;
+                        posY = 470;
                         axis = 2;
                         posX = randX;
                     }
@@ -162,19 +163,22 @@ namespace SharpAsteroids
             int minutes = (int)elapsedTime / 60;
 
             string msgP = "POINTS: " + score.ToString("00");
-            Raylib.DrawTextEx(font, msgP, new Vector2(5,5), 15, 5, Color.WHITE);
-            Raylib.DrawText("DEATH:  " + death.ToString("00"), 5, 25, 15, Color.WHITE);
-            Raylib.DrawText($"{minutes:00}:{seconds:00}", 5, 465, 15, Color.WHITE);
+            string msgD = "DEATH:  " + death.ToString("00");
+            string msgT = $"{minutes:00}:{seconds:00}";
+            Raylib.DrawTextEx(font, msgP, new(5, 5), fontSize1, 0, Color.GREEN);
+            Raylib.DrawTextEx(font, msgD, new(5, 25), fontSize1, 0, Color.PURPLE);
+            Raylib.DrawTextEx(font, msgT, new(5, Raylib.GetScreenHeight()-fontSize1), fontSize1, 0, Color.WHITE);
 
             if (win)
             {
-                Raylib.DrawText("Congratulations!", 300, 240, 25, Color.WHITE);
-                Raylib.DrawText("You Win!", 300, 270, 25, Color.WHITE);
+                string msg = "Congratulations!\nYou Win!";
+                Raylib.DrawTextEx(font, msg, new(Raylib.GetScreenWidth()/2, Raylib.GetScreenHeight()/2), fontSize1*2, 0, Color.GREEN);
             }
             if (lose)
             {
-                Raylib.DrawText("You Lose!", 300, 240, 25, Color.WHITE);
-            }            
+                string msg = "Game Over!\nYou Lost!";
+                Raylib.DrawTextEx(font, msg, new(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2), fontSize1 * 2, 0, Color.RED);
+            }
         }
     }
 }
